@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nueva Operacion de Prestamo</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Nueva Operacion de Prestamo</h1>
+    <form th:action="@{/operaciones/prestamos/save}" method="post" th:object="${operacion}">
+        <div class="form-group">
+            <label for="monto">Monto</label>
+            <input type="number" class="form-control" id="monto" name="monto" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo</label>
+            <select class="form-control" id="tipo" name="tipo" required>
+                <option value="ordinario">Ordinario</option>
+                <option value="extraordinario">Extraordinario</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="prestamo">Prestamo</label>
+            <select class="form-control" id="prestamo" name="prestamo" required>
+                <option th:each="prestamo : ${prestamos}" th:value="${prestamo.id}" th:text="${prestamo.id}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Operacion de Prestamo</button>
+    </form>
+</div>
+</body>
+</html>

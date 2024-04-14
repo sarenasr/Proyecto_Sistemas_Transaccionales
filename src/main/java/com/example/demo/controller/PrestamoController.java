@@ -26,12 +26,14 @@ public class PrestamoController {
     @PostMapping("/prestamos/toggleEstado")
     public String toggleEstado(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
         // Retrieve the prestamo from the repository
+        //System.out.println(id);
         Prestamo prestamo = prestamoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid prestamo id:" + id));
 
         // Check if the saldo is 0 before toggling the estado
-        if (prestamo.getSaldo() != 0) {
+        if (prestamo.getSaldo() != 0.0) {
             // Add an error message to the redirect attributes
+            //System.out.println(prestamo.getSaldo());
             redirectAttributes.addFlashAttribute("error", "El saldo del préstamo no es 0");
             return "redirect:/prestamos";
         }

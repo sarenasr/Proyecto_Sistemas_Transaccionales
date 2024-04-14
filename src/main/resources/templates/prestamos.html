@@ -5,40 +5,40 @@
 </head>
 <body>
 <h1>Prestamos</h1>
-<form th:action="@{/prestamos/toggleEstado}" method="post">
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Monto</th>
-            <th>Interes</th>
-            <th>Cuotas</th>
-            <th>Dia de Pago</th>
-            <th>Valor Cuota</th>
-            <th>Estado</th>
-            <th>Saldo</th>
-            <th>Tipo</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="prestamo : ${prestamos}">
-            <td th:text="${prestamo.id}"></td>
-            <td th:text="${prestamo.monto}"></td>
-            <td th:text="${prestamo.interes}"></td>
-            <td th:text="${prestamo.cuotas}"></td>
-            <td th:text="${prestamo.diaDePago}"></td>
-            <td th:text="${prestamo.valorCuota}"></td>
-            <td>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Monto</th>
+        <th>Interes</th>
+        <th>Cuotas</th>
+        <th>Dia de Pago</th>
+        <th>Valor Cuota</th>
+        <th>Estado</th>
+        <th>Saldo</th>
+        <th>Tipo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prestamo : ${prestamos}">
+        <td th:text="${prestamo.id}"></td>
+        <td th:text="${prestamo.monto}"></td>
+        <td th:text="${prestamo.interes}"></td>
+        <td th:text="${prestamo.cuotas}"></td>
+        <td th:text="${prestamo.diaDePago}"></td>
+        <td th:text="${prestamo.valorCuota}"></td>
+        <td>
+            <form th:action="@{/prestamos/toggleEstado}" method="post">
                 <input type="hidden" name="id" th:value="${prestamo.id}">
                 <input type="hidden" name="estado" th:value="${!prestamo.estado}">
                 <input type="checkbox" th:checked="${prestamo.estado}" onchange="this.form.submit()">
                 <span th:text="${prestamo.estado ? 'Activo' : 'Cerrado'}"></span>
-            </td>
-            <td th:text="${prestamo.saldo}"></td>
-            <td th:text="${prestamo.tipo}"></td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+            </form>
+        </td>
+        <td th:text="${prestamo.saldo}"></td>
+        <td th:text="${prestamo.tipo}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
