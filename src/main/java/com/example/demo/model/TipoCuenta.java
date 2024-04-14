@@ -3,13 +3,11 @@ package com.example.demo.model;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-public enum TipoUsuario {
+public enum TipoCuenta {
     @Enumerated(EnumType.STRING)
-    gerente_general,
+    ahorros,
     @Enumerated(EnumType.STRING)
-    gerente_oficina,
+    afc,
     @Enumerated(EnumType.STRING)
-    cajero,
-    @Enumerated(EnumType.STRING)
-    cliente
+    corriente;
 }

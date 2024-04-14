@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Punto de Atención</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Nuevo Punto de Atención</h1>
+    <form th:action="@{/puntos/save}" method="post" enctype="multipart/form-data" th:object="${punto}">
+        <div class="form-group">
+            <label for="localizacion">Ubicación</label>
+            <input type="text" th:field = "*{ubicacion}" class="form-control" id="localizacion" name="localizacion" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoDeAtencion">Tipo de Atención</label>
+            <select class="form-control" id="tipoDeAtencion" name="tipoDeAtencion" th:field="${punto.tipoAtencion}">
+                <th:block th:each="tipoDeAtencion : ${T(com.example.demo.model.TipoAtencion).values()}">
+                    <option th:value="${tipoDeAtencion}" th:text="${tipoDeAtencion}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="oficina">Oficina</label>
+            <select class="form-control" id="oficina" name="oficina">
+                <th:block th:each="oficina : ${oficinas}">
+                    <option th:value="${oficina.id}" th:text="${oficina.nombre}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Punto de Atención</button>
+    </form>
+
+    <h2>Eliminar Punto de Atención</h2>
+    <form th:action="@{/puntos/delete}" method="post">
+        <div class="form-group">
+            <label for="puntoDeAtencion">Punto de Atención</label>
+            <select class="form-control" id="puntoDeAtencion" name="id">
+                <th:block th:each="punto : ${puntos}">
+                    <option th:value="${punto.id}" th:text="${punto.id}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-danger">Eliminar Punto de Atención</button>
+    </form>
+
+</div>
+</body>
+</html>

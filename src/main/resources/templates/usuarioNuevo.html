@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Usuario</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Nuevo Usuario</h1>
+    <form th:action="@{/usuarios/save}" method="post" enctype="multipart/form-data" th:object="${usuario}">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="login">Login</label>
+            <input type="text" th:field = "*{login}" class="form-control" id="login" name="login" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contraseña">Contraseña</label>
+            <input type="password" th:field = "*{contrasena}" class="form-control" id="contraseña" name="contraseña" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" th:field = "*{nombre}" class="form-control" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+            <label for="nacionalidad">Nacionalidad</label>
+            <input type="text" th:field = "*{nacionalidad}" class="form-control" id="nacionalidad" name="nacionalidad" required>
+        </div>
+
+        <div class="form-group">
+            <label for="direccionFisica">Dirección Física</label>
+            <input type="text" th:field = "*{direccionFisica}" class="form-control" id="direccionFisica" name="direccionFisica" required>
+        </div>
+
+        <div class="form-group">
+            <label for="direccionElectronica">Dirección Electrónica</label>
+            <input type="email" th:field = "*{direccionElectronica}" class="form-control" id="direccionElectronica" name="direccionElectronica" required>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" th:field = "*{telefono}" class="form-control" id="telefono" name="telefono" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input type="text" th:field = "*{ciudad}" class="form-control" id="ciudad" name="ciudad" required>
+        </div>
+
+        <div class="form-group">
+            <label for="departamento">Departamento</label>
+            <input type="text" th:field = "*{departamento}" class="form-control" id="departamento" name="departamento" required>
+        </div>
+
+        <div class="form-group">
+            <label for="codigoPostal">Código Postal</label>
+            <input type="text" th:field = "*{codigoPostal}" class="form-control" id="codigoPostal" name="codigoPostal" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoId">Tipo ID</label>
+            <select class="form-control" id="tipoId" name="tipoId">
+                <th:block th:each="tipo : ${T(com.example.demo.model.TipoId).values()}">
+                    <option th:field = "*{tipoId}" th:value="${tipo}" th:text="${tipo}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoPersona">Tipo de Persona</label>
+            <select class="form-control" id="tipoPersona" name="tipoPersona">
+                <th:block th:each="tipo : ${T(com.example.demo.model.TipoPersona).values()}">
+                    <option th:field = "*{tipoPersona}" th:value="${tipo}" th:text="${tipo}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tipoUsuario">Tipo de Usuario</label>
+            <select class="form-control" id="tipoUsuario" name="tipoUsuario">
+                <th:block th:each="tipo : ${T(com.example.demo.model.TipoUsuario).values()}">
+                    <option th:field = "*{tipoUsuario}" th:value="${tipo}" th:text="${tipo}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Lista de Usuarios</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-5">Lista de Usuarios</h1>
+
+    <form th:action="@{usuarios}" method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar usuario" name="nombre">
+            <select class="form-control" name="tipoDeUsuario">
+                <option value="">Todos los tipos</option>
+                <option value="tipo1">Gerente General</option>
+                <option value="tipo2">Gerente Oficina</option>
+                <option value="tipo2">Cajero</option>
+                <option value="tipo2">Cliente</option>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+            <a href="/usuarios/new" class="btn btn-primary">Crear Usuario</a>
+        </div>
+    </form>
+
+    <table class="table table-bordered mt-3">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tipo ID</th>
+            <th scope="col">Login</th>
+            <th scope="col">Contraseña</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Nacionalidad</th>
+            <th scope="col">Dirección Física</th>
+            <th scope="col">Dirección Electrónica</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Departamento</th>
+            <th scope="col">Tipo de Persona</th>
+            <th scope="col">Tipo de Usuario</th>
+            <th scope="col">Código Postal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.tipoId}"></td>
+            <td th:text="${usuario.login}"></td>
+            <td th:text="${usuario.contrasena}"></td>
+            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.nacionalidad}"></td>
+            <td th:text="${usuario.direccionFisica}"></td>
+            <td th:text="${usuario.direccionElectronica}"></td>
+            <td th:text="${usuario.telefono}"></td>
+            <td th:text="${usuario.ciudad}"></td>
+            <td th:text="${usuario.departamento}"></td>
+            <td th:text="${usuario.tipoPersona}"></td>
+            <td th:text="${usuario.tipoUsuario}"></td>
+            <td th:text="${usuario.codigoPostal}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+</body>
+
+</html>

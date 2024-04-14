@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cuentas</title>
+</head>
+<body>
+<h1>Cuentas</h1>
+<form th:action="@{/cuentas/toggleEstado}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Tipo</th>
+            <th>Saldo</th>
+            <th>Ultima Transaccion</th>
+            <th>Estado</th>
+            <th>Usuario</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cuenta : ${cuentas}">
+            <td th:text="${cuenta.numeroDeCuenta}"></td>
+            <td th:text="${cuenta.tipoCuenta}"></td>
+            <td th:text="${cuenta.saldo}"></td>
+            <td th:text="${cuenta.ultimaTransaccion}"></td>
+            <td>
+                <input type="hidden" name="numeroDeCuenta" th:value="${cuenta.numeroDeCuenta}">
+                <input type="hidden" name="estado" th:value="${!cuenta.estado}">
+                <input type="checkbox" th:checked="${cuenta.estado}" onchange="this.form.submit()">
+                <span th:text="${cuenta.estado ? 'Activa' : 'Desactiva'}"></span>
+            </td>
+            <td th:text="${cuenta.usuario.nombre}"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

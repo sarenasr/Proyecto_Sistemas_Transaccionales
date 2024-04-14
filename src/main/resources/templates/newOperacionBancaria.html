@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Operacion Bancaria</title>
+</head>
+<body>
+<h1>Create New Operacion Bancaria</h1>
+<form action="/operaciones/save" method="post" th:object="${operacion}">
+    <label for="valor">Valor:</label>
+    <input type="text" id="valor" name="valor" required><br><br>
+
+    <label for="fecha">Fecha:</label>
+    <input type="datetime-local" id="fecha" name="fecha" required><br><br>
+
+    <label for="tipoOperacion">Tipo de Operacion:</label>
+    <select id="tipoOperacion" name="tipoOperacion" required>
+        <option value="consignacion">Consignacion</option>
+        <option value="retiro">Retiro</option>
+        <option value="transferencia">Transferencia</option>
+    </select><br><br>
+
+    <label for="cuentaOrigen">Cuenta Origen:</label>
+    <input type="text" id="cuentaOrigen" name="cuentaOrigen" required><br><br>
+
+    <label for="cuentaDestino">Cuenta Destino:</label>
+    <input type="text" id="cuentaDestino" name="cuentaDestino"><br><br>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
