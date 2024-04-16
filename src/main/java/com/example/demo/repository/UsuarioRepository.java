@@ -41,4 +41,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                 telefono, ciudad, departamento, codigoPostal, tipoId.toString(), tipoUsuario.toString(), tipoPersona.toString());
     }
     List<Usuario> findByNombre(String nombre);
+
+    // Find users by name containing and user type
+    List<Usuario> findByNombreContainingAndTipoUsuario(String nombre, TipoUsuario tipoUsuario);
+
+    // Find users by name containing
+    List<Usuario> findByNombreContaining(String nombre);
+
+    // Find users by user type
+    List<Usuario> findByTipoUsuario(TipoUsuario tipoUsuario);
 }
