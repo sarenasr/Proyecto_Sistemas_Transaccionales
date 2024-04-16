@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Bank Statement</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+<div class="container">
+    <h1 class="mt-5">Bank Statement</h1>
+
+    <form th:action="@{/extracto/generate}" method="post" class="mt-3">
+        <div class="form-group">
+            <label for="cuenta">Select Account Number:</label>
+            <select class="form-control" id="cuenta" name="numeroDeCuenta">
+                <option th:each="cuenta : ${cuentas}" th:value="${cuenta.numeroDeCuenta}" th:text="${cuenta.numeroDeCuenta}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="month">Select Month:</label>
+            <input type="number" class="form-control" id="month" name="month" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Generate Statement</button>
+    </form>
+</div>
+</body>
+
+</html>

@@ -34,4 +34,6 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
     @Query("UPDATE Cuenta c SET c.saldo = :saldo WHERE c.numeroDeCuenta = :numeroDeCuenta")
     void updateSaldo(@Param("numeroDeCuenta") Long numeroDeCuenta, @Param("saldo") Float saldo);
 
+    Cuenta findByNumeroDeCuenta(Long numeroDeCuenta);
+
 }

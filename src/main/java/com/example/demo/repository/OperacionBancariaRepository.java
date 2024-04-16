@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -26,4 +27,6 @@ public interface OperacionBancariaRepository extends JpaRepository<OperacionBanc
             @Param("cuentaOrigen") Long cuentaOrigen,
             @Param("cuentaDestino") Long cuentaDestino
     );
+
+    List<OperacionBancaria> findByCuentaOrigenNumeroDeCuentaAndFechaBetween(Long numeroDeCuenta, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 }
