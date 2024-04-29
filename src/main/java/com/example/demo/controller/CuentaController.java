@@ -9,7 +9,10 @@ import com.example.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -68,6 +71,102 @@ public class CuentaController {
         return "extractoNuevo"; // Return the HTML file name
     }
 
+    @GetMapping("/extracto/serializable")
+    public String extractoSerializable(Model model){
+        List<Cuenta> cuentas = cuentaRepository.findAll();
+        model.addAttribute("cuentas", cuentas);
+        return "extractoSerializable";
+    }
+
+    @PostMapping("/extracto/generate/serializable")
+    public String generateExtractoSerializable(@RequestParam(name = "numeroDeCuenta")Long numeroDeCuenta, Model model) {
+        LocalDateTime date = LocalDateTime.now();
+
+        Cuenta cuenta = cuentaRepository.findByNumeroDeCuenta(numeroDeCuenta);
+
+        List<OperacionBancaria> operaciones = operacionBancariaRepository.findByCuentaOrigenNumeroDeCuentaAndFechaBetween(numeroDeCuenta,
+                date.minusDays(30),
+                date);
+
+        Float initialBalance = cuenta.getSaldo();
+
+
+        for (OperacionBancaria operacion : operaciones) {
+            if (operacion.getTipoOperacion().equals("consignacion")) {
+                initialBalance -= operacion.getValor();
+            } else if (operacion.getTipoOperacion().equals("transferencia") || operacion.getTipoOperacion().equals("retiro")) {
+                initialBalance += operacion.getValor();
+            }
+        }
+
+        List<String> statement = new ArrayList<>();
+        statement.add("Tipo Operacion   -   Fecha   -   Monto");
+        for (OperacionBancaria operacion : operaciones) {
+            String operationType = operacion.getTipoOperacion();
+            statement.add(operationType + " - " + operacion.getFecha() + " - " + operacion.getValor());
+        }
+
+
+        Float finalBalance = cuenta.getSaldo();
+
+        model.addAttribute("cuentas", cuentaRepository.findAll());
+        model.addAttribute("accountNumber", numeroDeCuenta);
+        model.addAttribute("month", date);
+        model.addAttribute("initialBalance", initialBalance);
+        model.addAttribute("statement", statement);
+        model.addAttribute("finalBalance", finalBalance);
+        // Add other attributes as needed
+
+        return "extracto";
+    }
+
+    @GetMapping("/extracto/read")
+    public String extractoRead(Model model){
+        List<Cuenta> cuentas = cuentaRepository.findAll();
+        model.addAttribute("cuentas", cuentas);
+        return "extractoRead";
+    }
+
+    @PostMapping("/extracto/generate/read")
+    public String generateExtractoRead(@RequestParam(name = "numeroDeCuenta")Long numeroDeCuenta, Model model) {
+        LocalDateTime date = LocalDateTime.now();
+
+        Cuenta cuenta = cuentaRepository.findByNumeroDeCuenta(numeroDeCuenta);
+
+        List<OperacionBancaria> operaciones = operacionBancariaRepository.findByFechaBetweenAndCuentaOrigenNumeroDeCuenta(date.minusDays(30), date,numeroDeCuenta);
+
+        Float initialBalance = cuenta.getSaldo();
+
+
+        for (OperacionBancaria operacion : operaciones) {
+            if (operacion.getTipoOperacion().equals("consignacion")) {
+                initialBalance -= operacion.getValor();
+            } else if (operacion.getTipoOperacion().equals("transferencia") || operacion.getTipoOperacion().equals("retiro")) {
+                initialBalance += operacion.getValor();
+            }
+        }
+
+        List<String> statement = new ArrayList<>();
+        statement.add("Tipo Operacion   -   Fecha   -   Monto");
+        for (OperacionBancaria operacion : operaciones) {
+            String operationType = operacion.getTipoOperacion();
+            statement.add(operationType + " - " + operacion.getFecha() + " - " + operacion.getValor());
+        }
+
+
+        Float finalBalance = cuenta.getSaldo();
+
+        model.addAttribute("cuentas", cuentaRepository.findAll());
+        model.addAttribute("accountNumber", numeroDeCuenta);
+        model.addAttribute("month", date);
+        model.addAttribute("initialBalance", initialBalance);
+        model.addAttribute("statement", statement);
+        model.addAttribute("finalBalance", finalBalance);
+        // Add other attributes as needed
+
+        return "extracto";
+    }
+
     @PostMapping("/extracto/generate")
     public String generateStatement(@RequestParam(name = "numeroDeCuenta", required = false) Long numeroDeCuenta,
                                     @RequestParam(name = "month", required = false) int month,
@@ -99,13 +198,14 @@ public class CuentaController {
 
         // 5. Summarize the operations (deposits, withdrawals, transfers) along with their dates
         List<String> statement = new ArrayList<>();
+        statement.add("Tipo Operacion   -   Fecha   -   Monto");
         for (OperacionBancaria operacion : operaciones) {
             String operationType = operacion.getTipoOperacion();
-            statement.add(operationType + " - " + operacion.getFecha() + " - Monto: " + operacion.getValor());
+            statement.add(operationType + " - " + operacion.getFecha() + " - " + operacion.getValor());
         }
 
         // 6. Calculate the balance at the end of the month
-        Float finalBalance = initialBalance;
+        Float finalBalance = cuenta.getSaldo();
         // Pass the statement data to the view
         model.addAttribute("cuentas", cuentaRepository.findAll());
         model.addAttribute("accountNumber", numeroDeCuenta);
