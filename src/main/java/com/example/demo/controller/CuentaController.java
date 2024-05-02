@@ -6,6 +6,7 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repository.CuentaRepository;
 import com.example.demo.repository.OperacionBancariaRepository;
 import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.service.OperacionBancariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,9 @@ public class CuentaController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private OperacionBancariaService operacionBancariaService;
 
     @GetMapping("/cuentas")
     public String getCuentas(Model model) {
@@ -84,9 +88,7 @@ public class CuentaController {
 
         Cuenta cuenta = cuentaRepository.findByNumeroDeCuenta(numeroDeCuenta);
 
-        List<OperacionBancaria> operaciones = operacionBancariaRepository.findByCuentaOrigenNumeroDeCuentaAndFechaBetween(numeroDeCuenta,
-                date.minusDays(30),
-                date);
+        List<OperacionBancaria> operaciones = operacionBancariaService.findOperacionesSerializable(numeroDeCuenta);;
 
         Float initialBalance = cuenta.getSaldo();
 
@@ -133,7 +135,7 @@ public class CuentaController {
 
         Cuenta cuenta = cuentaRepository.findByNumeroDeCuenta(numeroDeCuenta);
 
-        List<OperacionBancaria> operaciones = operacionBancariaRepository.findByFechaBetweenAndCuentaOrigenNumeroDeCuenta(date.minusDays(30), date,numeroDeCuenta);
+        List<OperacionBancaria> operaciones = operacionBancariaService.findOperacionesRead(numeroDeCuenta);
 
         Float initialBalance = cuenta.getSaldo();
 

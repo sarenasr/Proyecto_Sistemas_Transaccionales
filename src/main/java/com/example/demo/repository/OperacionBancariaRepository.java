@@ -30,6 +30,45 @@ public interface OperacionBancariaRepository extends JpaRepository<OperacionBanc
             @Param("cuentaDestino") Long cuentaDestino
     );
 
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "INSERT INTO operaciones_bancarias (valor, fecha, tipo_operacion, cuenta_origen, cuenta_destino) " +
+            "VALUES (:valor, :fecha, :tipoOperacion, :cuentaOrigen, :cuentaDestino)",
+            nativeQuery = true)
+    void insertRetiro(
+            @Param("valor") Float valor,
+            @Param("fecha") LocalDateTime fecha,
+            @Param("tipoOperacion") String tipoOperacion,
+            @Param("cuentaOrigen") Long cuentaOrigen,
+            @Param("cuentaDestino") Long cuentaDestino
+    );
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "INSERT INTO operaciones_bancarias (valor, fecha, tipo_operacion, cuenta_origen, cuenta_destino) " +
+            "VALUES (:valor, :fecha, :tipoOperacion, :cuentaOrigen, :cuentaDestino)",
+            nativeQuery = true)
+    void insertConsignacion(
+            @Param("valor") Float valor,
+            @Param("fecha") LocalDateTime fecha,
+            @Param("tipoOperacion") String tipoOperacion,
+            @Param("cuentaOrigen") Long cuentaOrigen,
+            @Param("cuentaDestino") Long cuentaDestino
+    );
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "INSERT INTO operaciones_bancarias (valor, fecha, tipo_operacion, cuenta_origen, cuenta_destino) " +
+            "VALUES (:valor, :fecha, :tipoOperacion, :cuentaOrigen, :cuentaDestino)",
+            nativeQuery = true)
+    void insertTransferencia(
+            @Param("valor") Float valor,
+            @Param("fecha") LocalDateTime fecha,
+            @Param("tipoOperacion") String tipoOperacion,
+            @Param("cuentaOrigen") Long cuentaOrigen,
+            @Param("cuentaDestino") Long cuentaDestino
+    );
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     List<OperacionBancaria> findByCuentaOrigenNumeroDeCuentaAndFechaBetween(Long numeroDeCuenta, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 

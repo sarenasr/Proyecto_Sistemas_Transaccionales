@@ -44,6 +44,11 @@ public class OperacionBancariaController {
                 }
                 cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() + operacionBancaria.getValor());
                 cuentaRepository.updateSaldo(cuentaOrigen.getNumeroDeCuenta(), cuentaOrigen.getSaldo());
+                operacionBancariaRepository.insertConsignacion( operacionBancaria.getValor(),
+                        operacionBancaria.getFecha(),
+                        operacionBancaria.getTipoOperacion(),
+                        cuentaOrigen.getNumeroDeCuenta(),
+                        cuentaDestino.getNumeroDeCuenta());
                 break;
             case "retiro":
                 if (!cuentaOrigen.equals(cuentaDestino)) {
@@ -56,6 +61,11 @@ public class OperacionBancariaController {
                 }
                 cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - operacionBancaria.getValor());
                 cuentaRepository.updateSaldo(cuentaOrigen.getNumeroDeCuenta(), cuentaOrigen.getSaldo());
+                operacionBancariaRepository.insertRetiro( operacionBancaria.getValor(),
+                        operacionBancaria.getFecha(),
+                        operacionBancaria.getTipoOperacion(),
+                        cuentaOrigen.getNumeroDeCuenta(),
+                        cuentaDestino.getNumeroDeCuenta());
                 break;
             case "transferencia":
                 if (cuentaOrigen.equals(cuentaDestino)) {
@@ -70,19 +80,24 @@ public class OperacionBancariaController {
                 cuentaRepository.updateSaldo(cuentaOrigen.getNumeroDeCuenta(), cuentaOrigen.getSaldo());
                 cuentaDestino.setSaldo(cuentaDestino.getSaldo() + operacionBancaria.getValor());
                 cuentaRepository.updateSaldo(cuentaDestino.getNumeroDeCuenta(), cuentaDestino.getSaldo());
+                operacionBancariaRepository.insertTransferencia( operacionBancaria.getValor(),
+                        operacionBancaria.getFecha(),
+                        operacionBancaria.getTipoOperacion(),
+                        cuentaOrigen.getNumeroDeCuenta(),
+                        cuentaDestino.getNumeroDeCuenta());
                 break;
             default:
                 redirectAttributes.addFlashAttribute("error", "Unknown tipoOperacion: " + tipoOperacion);
                 return "redirect:/operaciones/new";
         }
 
-        operacionBancariaRepository.insertOperacion(
+        /*operacionBancariaRepository.insertOperacion(
                 operacionBancaria.getValor(),
                 operacionBancaria.getFecha(),
                 operacionBancaria.getTipoOperacion(),
                 cuentaOrigen.getNumeroDeCuenta(),
                 cuentaDestino.getNumeroDeCuenta()
-        );
+        );*/
 
         return "redirect:/operaciones/new";
     }
