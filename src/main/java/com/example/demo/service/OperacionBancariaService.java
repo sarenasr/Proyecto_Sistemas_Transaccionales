@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,5 +49,36 @@ public class OperacionBancariaService {
         }
     }
 
+    @Transactional
+public void registrarConsignacion(Long numeroDeCuenta, Float monto) {
+    Cuenta cuenta = cuentaRepository.findById(numeroDeCuenta).orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+    cuenta.setSaldo(cuenta.getSaldo() + monto);  // Asumiendo que se incrementa el saldo
+    cuentaRepository.save(cuenta);
+
+    OperacionBancaria operacion = new OperacionBancaria();
+    operacion.setCuentaOrigen(cuenta);
+    operacion.setValor(monto);
+    operacion.setTipoOperacion("consignacion");
+    operacion.setFecha(LocalDateTime.now());
+
+    operacionBancariaRepository.save(operacion);
+}
+
+    // Método para obtener el saldo actual de una cuenta
+    public Float getSaldoActual(Long numeroDeCuenta) {
+        return cuentaRepository.findById(numeroDeCuenta)
+                               .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"))
+                               .getSaldo();
+    }
+
+    public List<OperacionBancaria> getRecentOperations(Long numeroDeCuenta) {
+        LocalDateTime now = LocalDateTime.now();
+        return operacionBancariaRepository.findByCuentaOrigenNumeroDeCuentaAndFechaBetween(numeroDeCuenta, now.minusDays(1), now);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    public List<OperacionBancaria> findOperacionesReadCommitted(Long cuentaId) {
+        return operacionBancariaRepository.findByCuentaOrigenNumeroDeCuenta(cuentaId);
+    }
 
 }

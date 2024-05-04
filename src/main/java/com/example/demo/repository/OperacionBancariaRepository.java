@@ -69,6 +69,10 @@ public interface OperacionBancariaRepository extends JpaRepository<OperacionBanc
             @Param("cuentaDestino") Long cuentaDestino
     );
 
+        // Método para encontrar operaciones por el número de cuenta de origen
+        @Query("SELECT ob FROM OperacionBancaria ob WHERE ob.cuentaOrigen.numeroDeCuenta = :numeroDeCuenta")
+        List<OperacionBancaria> findByCuentaOrigenNumeroDeCuenta(@Param("numeroDeCuenta") Long numeroDeCuenta);
+        
     @Transactional(isolation = Isolation.SERIALIZABLE)
     List<OperacionBancaria> findByCuentaOrigenNumeroDeCuentaAndFechaBetween(Long numeroDeCuenta, LocalDateTime localDateTime, LocalDateTime localDateTime1);
 
